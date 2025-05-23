@@ -13,33 +13,32 @@ struct ContentView: View {
     var body: some View {
         VStack {
             ForEach(0 ..< floors, id:\.self) { a in
-                HStack {
+                HStack(spacing: 0) {
                     ForEach(0 ..< tileCount, id:\.self) { b in
                         TileView(tile: Tile(tileType: TileType.EMPTY))
                             .padding(0)
                     }
                 }
-                .padding(5)
+                .padding(0)
             }
             HStack {
-                Button("LEFT") {
-                    print("UP")
-                }
-                VStack{
-                    Button("UP") {
+                HStack {
+                    Button("LEFT") {
                         print("UP")
                     }
-                    .padding()
-                    Button("DOWN") {
+                    Button("RIGHT") {
                         print("UP")
                     }
                 }
-                Button("RIGHT") {
+                .padding(50)
+                Spacer()
+                Button("Interact") {
                     print("UP")
                 }
+                .padding(50)
             }
         }
-        .padding()
+        .padding(0)
     }
 }
 
