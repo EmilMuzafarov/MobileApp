@@ -20,10 +20,18 @@ enum TileType {
     case STAIRS
 }
 
+
 struct Tile {
+    static let imageDict: Dictionary = [
+        TileType.EMPTY : "",
+        TileType.CLASSROOM : "",
+        TileType.LOCKER : "",
+        TileType.STAIRS : ""
+    ]
     var tileType: TileType
     // only used if tile is stair, otherwise you don't need to interact with it
     var stairDirection: StairDirection = StairDirection.NONE
+    
 }
 
 struct TileView: View {
