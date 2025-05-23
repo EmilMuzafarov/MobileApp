@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+enum StairDirection {
+    case NONE
+    case UP
+    case DOWN
+}
+
 enum TileType {
     case EMPTY
     case CLASSROOM
@@ -16,7 +22,8 @@ enum TileType {
 
 struct Tile {
     var tileType: TileType
-    
+    // only used if tile is stair, otherwise you don't need to interact with it
+    var stairDirection: StairDirection = StairDirection.NONE
 }
 
 struct TileView: View {
