@@ -39,6 +39,7 @@ struct TileView: View {
     var body: some View {
         Rectangle()
             .frame(width: 32, height: 32)
+            .padding(0)
     }
 }
 
