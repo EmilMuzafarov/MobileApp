@@ -8,14 +8,36 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var model: GameModel
-    
+    @State var tileCount=7
+    @State var floors=10
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            ForEach(0 ..< floors, id:\.self) { a in
+                HStack {
+                    ForEach(0 ..< tileCount, id:\.self) { b in
+                        TileView(tile: Tile(tileType: TileType.EMPTY))
+                            .padding(0)
+                    }
+                }
+                .padding(5)
+            }
+            HStack {
+                Button("LEFT") {
+                    print("UP")
+                }
+                VStack{
+                    Button("UP") {
+                        print("UP")
+                    }
+                    .padding()
+                    Button("DOWN") {
+                        print("UP")
+                    }
+                }
+                Button("RIGHT") {
+                    print("UP")
+                }
+            }
         }
         .padding()
     }
