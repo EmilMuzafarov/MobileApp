@@ -10,6 +10,14 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
+            Button() {
+                TaskView()
+            } label: {
+                Image("taskButton")
+                    .resizable()
+                    .frame(width: 50, height: 50)
+            }
+            .offset(x:150, y:-50)
             GameView()
             HStack {
                 HStack {
@@ -22,8 +30,12 @@ struct ContentView: View {
                 }
                 .padding(50)
                 Spacer()
-                Button("Interact") {
+                Button() {
                     print("UP")
+                } label: {
+                    Image("directionButton")
+                        .resizable()
+                        .frame(width: 50, height: 50)
                 }
                 .padding(50)
             }

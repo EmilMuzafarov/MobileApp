@@ -8,5 +8,5 @@
 import Foundation
 
 class GameModel: ObservableObject {
-    var buildingGrid: [[Tile]] = [[]]
+    @Published var buildingGrid: [[Tile]] = [[]]
 }

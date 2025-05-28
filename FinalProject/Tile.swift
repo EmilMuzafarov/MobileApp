@@ -42,7 +42,6 @@ struct TileView: View {
             .padding(0)
     }
 }
-
 #Preview {
     TileView(tile: Tile(tileType: TileType.EMPTY))
 }
