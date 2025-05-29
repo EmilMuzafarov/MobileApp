@@ -1,24 +1,23 @@
 //
-//  TaskView.swift
+//  GameActor.swift
 //  FinalProject
 //
-//  Created by Student on 5/28/25.
+//  Created by Student on 5/29/25.
 //
 
 import SwiftUI
 
-struct GameTask {
+struct GameActor {
     
 }
 
-struct GameTaskView: View {
-    var task: GameTask
+struct GameActorView: View {
+    var actor: GameActor
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    GameTaskView(task: GameTask())
+    GameActorView(actor: GameActor())
 }
-

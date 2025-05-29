@@ -9,4 +9,7 @@ import Foundation
 
 class GameModel: ObservableObject {
     @Published var buildingGrid: [[Tile]] = [[]]
+    @Published var actorList: [GameActor] = []
+    @Published var player: GameActor = GameActor()
+    @Published var taskList: [GameTask] = []
 }
