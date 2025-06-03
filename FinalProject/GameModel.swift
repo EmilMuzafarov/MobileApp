@@ -51,45 +51,44 @@ class GameModel: ObservableObject {
         return indList
     }
     
-    func getAdjustedIndexOnIndexList(indexInt: Int, indexList: [Int]) -> Int {
+    func getAdjustedIndexOnIndexList(rowInd: Int, indexInt: Int, indexList: [Int]) -> Int {
         var focusIndex: Int = 0
-        while focusIndex < indexList.count && indexList[focusIndex] <= indexInt {
+        while focusIndex < indexList.count && indexList[focusIndex] <= (indexInt+focusIndex) {
             focusIndex += 1
         }
         return indexInt + focusIndex
     }
     
     func addTileOnAvailableColumn(rowInd: Int, tileType: TileType) {
-        var takenTilesOnRow: [Int] = getTakenTileInds(rowInd: rowInd)
-        var maxColumnIndPick: Int = columns - takenTilesOnRow.count
-        var columnPick: Int = Int.random(in: 1...maxColumnIndPick)
-        columnPick = getAdjustedIndexOnIndexList(indexInt: columnPick, indexList: takenTilesOnRow)
-        var newTile: Tile = Tile(tileType: tileType)
+        let takenTilesOnRow: [Int] = getTakenTileInds(rowInd: rowInd)
+        let maxColumnIndPick: Int = columns - takenTilesOnRow.count
+        var columnPick: Int = Int.random(in: 0..<maxColumnIndPick)
+        columnPick = getAdjustedIndexOnIndexList(rowInd: rowInd, indexInt: columnPick, indexList: takenTilesOnRow)
+        let newTile: Tile = Tile(tileType: tileType)
+        
         self.buildingGrid[rowInd][columnPick] = newTile
     }
     
     func addStairs() {
-        for yInd in 0..<rows {
+        for yInd in 0..<rows-1 {
             var maxColumnIndPick: Int = columns
-            var currentStairInd: Int = getFirstStairIndOnRow(rowInd: yInd)
+            let currentStairInd: Int = getFirstStairIndOnRow(rowInd: yInd)
             // Lower amount of available columns if a stair tile exists
             if currentStairInd != -1 {
                 maxColumnIndPick -= 1
             }
             // Pick column, if on or after stair, adjust to allow for last column to be chosen
-            var columnPick: Int = Int.random(in: 1...maxColumnIndPick)
-            if columnPick <= currentStairInd {
+            var columnPick: Int = Int.random(in: 0..<maxColumnIndPick)
+            if columnPick >= currentStairInd {
                 columnPick += 1
             }
             // Stair assignments
-            var newDownStair: Tile = Tile(tileType: TileType.STAIRS, stairDirection: StairDirection.DOWN)
-            var newUpStair: Tile = Tile(tileType: TileType.STAIRS, stairDirection: StairDirection.UP)
+            let newDownStair: Tile = Tile(tileType: TileType.STAIRS, stairDirection: StairDirection.DOWN)
+            let newUpStair: Tile = Tile(tileType: TileType.STAIRS, stairDirection: StairDirection.UP)
             
-                self.buildingGrid[yInd][columnPick] = newDownStair
             
-            if yInd < rows-1 {
-                self.buildingGrid[yInd+1][columnPick] = newUpStair
-            }
+            self.buildingGrid[yInd][columnPick] = newDownStair
+            self.buildingGrid[yInd+1][columnPick] = newUpStair
         }
     }
     

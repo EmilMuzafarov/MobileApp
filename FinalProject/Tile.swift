@@ -28,6 +28,13 @@ struct Tile {
         TileType.LOCKER : "trash",
         TileType.STAIRS : "stairs"
     ]
+    
+    static let stairImageDict: Dictionary = [
+        StairDirection.DOWN: "square.and.arrow.down",
+        StairDirection.UP: "square.and.arrow.up",
+        StairDirection.NONE: ""
+    ]
+    
     var tileType: TileType
     // only used if tile is stair, otherwise you don't need to interact with it
     var stairDirection: StairDirection = StairDirection.NONE
@@ -37,9 +44,16 @@ struct Tile {
 struct TileView: View {
     var tile: Tile
     var body: some View {
-        Image(systemName: Tile.imageDict[tile.tileType] ?? "heart.fill")
-            .frame(width: 32, height: 32)
-            .padding(0)
+        if tile.tileType == TileType.STAIRS {
+            Image(systemName: Tile.stairImageDict[tile.stairDirection] ?? "heart.fill")
+                .frame(width: 32, height: 32)
+                .padding(0)
+        } else {
+            Image(systemName: Tile.imageDict[tile.tileType] ?? "heart.fill")
+                .frame(width: 32, height: 32)
+                .padding(0)
+        }
+            
     }
 }
 #Preview {
