@@ -8,28 +8,33 @@
 import Foundation
 
 class GameModel: ObservableObject {
-    @Published var buildingGrid: [[Tile]] = [[]]
+    @Published var buildingGrid: [[Tile]] = []
     @Published var actorList: [GameActor] = []
     @Published var player: GameActor = GameActor()
     @Published var taskList: [GameTask] = []
-    var row: Int = 10
-    var column: Int = 7
+    var rows: Int = 10
+    var columns: Int = 7
+    
+    init() {
+        initiateGame()
+    }
     
     func initiateGame() {
         buildTiles()
     }
     
     func addDefaultTiles() {
-        for _ in 0..<row {
-            for _ in 1...column {
-                self.buildingGrid[row][column] = Tile(tileType: TileType.EMPTY)
+        for row in 0..<rows {
+            self.buildingGrid.append([])
+            for _ in 0..<columns {
+                self.buildingGrid[row].append(Tile(tileType: TileType.EMPTY))
             }
         }
     }
     
     func getFirstStairIndOnRow(rowInd: Int) -> Int {
-        for xInd in 0..<column {
-            if self.buildingGrid[rowInd][column].tileType == TileType.STAIRS {
+        for xInd in 0..<columns {
+            if self.buildingGrid[rowInd][xInd].tileType == TileType.STAIRS {
                 return xInd
             }
         }
@@ -38,8 +43,8 @@ class GameModel: ObservableObject {
     
     func getTakenTileInds(rowInd: Int) -> [Int] {
         var indList: [Int] = []
-        for xInd in 0..<column {
-            if self.buildingGrid[rowInd][column].tileType != TileType.EMPTY {
+        for xInd in 0..<columns {
+            if self.buildingGrid[rowInd][xInd].tileType != TileType.EMPTY {
                 indList.append(xInd)
             }
         }
@@ -56,7 +61,7 @@ class GameModel: ObservableObject {
     
     func addTileOnAvailableColumn(rowInd: Int, tileType: TileType) {
         var takenTilesOnRow: [Int] = getTakenTileInds(rowInd: rowInd)
-        var maxColumnIndPick: Int = column - takenTilesOnRow.count
+        var maxColumnIndPick: Int = columns - takenTilesOnRow.count
         var columnPick: Int = Int.random(in: 1...maxColumnIndPick)
         columnPick = getAdjustedIndexOnIndexList(indexInt: columnPick, indexList: takenTilesOnRow)
         var newTile: Tile = Tile(tileType: tileType)
@@ -64,8 +69,8 @@ class GameModel: ObservableObject {
     }
     
     func addStairs() {
-        for yInd in 0..<row {
-            var maxColumnIndPick: Int = column
+        for yInd in 0..<rows {
+            var maxColumnIndPick: Int = columns
             var currentStairInd: Int = getFirstStairIndOnRow(rowInd: yInd)
             // Lower amount of available columns if a stair tile exists
             if currentStairInd != -1 {
@@ -86,7 +91,7 @@ class GameModel: ObservableObject {
     
     // A classroom and locker for each floor
     func addClassroomsAndLockers() {
-        for yInd in 0..<row {
+        for yInd in 0..<rows {
             addTileOnAvailableColumn(rowInd: yInd, tileType: TileType.CLASSROOM)
             addTileOnAvailableColumn(rowInd: yInd, tileType: TileType.LOCKER)
         }
@@ -94,8 +99,8 @@ class GameModel: ObservableObject {
     
     func buildTiles() {
         addDefaultTiles()
-        addStairs()
-        addClassroomsAndLockers()
+        //addStairs()
+        //addClassroomsAndLockers()
     }
     
     
