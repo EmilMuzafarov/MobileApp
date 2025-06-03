@@ -17,6 +17,7 @@ struct GameView: View {
                 ForEach(0 ..< tileCount, id:\.self) { b in
                     TileView(tile: model.buildingGrid[a][b])
                         .padding(0)
+                        
                 }
             }
             .padding(0)

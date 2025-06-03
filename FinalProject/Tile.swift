@@ -46,10 +46,13 @@ struct TileView: View {
     var body: some View {
         if tile.tileType == TileType.STAIRS {
             Image(systemName: Tile.stairImageDict[tile.stairDirection] ?? "heart.fill")
+                .resizable()
                 .frame(width: 32, height: 32)
                 .padding(0)
+            
         } else {
             Image(systemName: Tile.imageDict[tile.tileType] ?? "heart.fill")
+                .resizable()
                 .frame(width: 32, height: 32)
                 .padding(0)
         }

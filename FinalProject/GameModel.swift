@@ -11,7 +11,7 @@ class GameModel: ObservableObject {
     @Published var buildingGrid: [[Tile]] = []
     @Published var actorList: [GameActor] = []
     @Published var player: GameActor = GameActor()
-    @Published var taskList: [GameTask] = []
+    //@Published var taskList: [GameTask] = []
     var rows: Int = 10
     var columns: Int = 7
     
