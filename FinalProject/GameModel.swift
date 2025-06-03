@@ -84,8 +84,12 @@ class GameModel: ObservableObject {
             // Stair assignments
             var newDownStair: Tile = Tile(tileType: TileType.STAIRS, stairDirection: StairDirection.DOWN)
             var newUpStair: Tile = Tile(tileType: TileType.STAIRS, stairDirection: StairDirection.UP)
-            self.buildingGrid[yInd][columnPick] = newDownStair
-            self.buildingGrid[yInd+1][columnPick] = newUpStair
+            
+                self.buildingGrid[yInd][columnPick] = newDownStair
+            
+            if yInd < rows-1 {
+                self.buildingGrid[yInd+1][columnPick] = newUpStair
+            }
         }
     }
     
@@ -99,8 +103,8 @@ class GameModel: ObservableObject {
     
     func buildTiles() {
         addDefaultTiles()
-        //addStairs()
-        //addClassroomsAndLockers()
+        addStairs()
+        addClassroomsAndLockers()
     }
     
     
