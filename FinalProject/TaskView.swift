@@ -7,18 +7,29 @@
 
 import SwiftUI
 
-struct GameTask {
-    
-}
-
-struct GameTaskView: View {
-    var task: GameTask
+struct Task: View {
+    var title: String
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text(title)
     }
 }
 
-#Preview {
-    GameTaskView(task: GameTask())
+struct TaskView: View {
+    var body: some View {
+        Text("Tasks:")
+            .font(.title)
+            .fontWeight(.bold)
+            .padding()
+        VStack {
+            ForEach(tasks, id: \.self) { t in
+                Task(title: t)
+                    .font(.headline)
+                Divider()
+            }
+        }
+        Text("Tasks completed: \(completed)")
+    }
 }
-
+#Preview {
+    TaskView()
+}
