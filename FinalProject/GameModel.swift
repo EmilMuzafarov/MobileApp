@@ -17,6 +17,7 @@ class GameModel: ObservableObject {
     
     init() {
         initiateGame()
+        initiateActors()
     }
     
     func initiateGame() {
@@ -106,5 +107,18 @@ class GameModel: ObservableObject {
         addClassroomsAndLockers()
     }
     
+    // Actor behavior
+    
+    
+    
+    // Player buttons
+    
+    func movePlayer(dir: Int) {
+        
+    }
+    
+    func playerInteract() {
+        
+    }
     
 }

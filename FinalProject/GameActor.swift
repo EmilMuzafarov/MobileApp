@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+enum ActorType {
+    case PLAYER
+    case HALL_MONITOR
+}
+
 struct GameActor {
     
 }
