@@ -10,10 +10,11 @@ import Foundation
 class GameModel: ObservableObject {
     @Published var buildingGrid: [[Tile]] = []
     @Published var actorList: [GameActor] = []
-    @Published var player: GameActor = GameActor()
+    @Published var player: GameActor
     //@Published var taskList: [GameTask] = []
     var rows: Int = 10
     var columns: Int = 7
+    var hallMonitorAmount: Int = 4
     
     init() {
         initiateGame()
@@ -22,6 +23,30 @@ class GameModel: ObservableObject {
     
     func initiateGame() {
         buildTiles()
+    }
+
+    func initiateActors() {
+        initiatePlayer()
+        initiateHallMonitors()
+    }
+
+    func initiatePlayer() {
+        player = GameActor(buildingXPos: 0, buildingYPos: rows-2, type: ActorType.PLAYER, facing: ActorFaceDirection.LEFT)
+        actorList.append(player)
+    }
+
+    func initiateHallMonitors() {
+        var existingHallMonitorInds: [Int] = []
+        for hallMonitorInd in 0..<hallMonitorAmount {
+            var rowPick: Int = Int.random(in: 0..<(rows-existingHallMonitorInds.count))
+            rowPick = getAdjustedIndexOnIndexList(rowPick, existingHallMonitorInds)
+            existingHallMonitorInds.append(rowPick)
+            
+            let columnPick: Int = Int.random(in: 0..<(columns))
+            let direction: ActorFaceDirection = (Int.random(in: 0...1) == 1 ? ActorFaceDirection.LEFT : ActorFaceDirection.RIGHT)
+            let newHallMonitor: GameActor = GameActor(buildingXPos: columnPick, buildingYPos: rowPick, type: ActorType.HALL_MONITOR, facing: direction)
+            actorList.append(newHallMonitor)
+        }
     }
     
     func addDefaultTiles() {
@@ -52,19 +77,41 @@ class GameModel: ObservableObject {
         return indList
     }
     
-    func getAdjustedIndexOnIndexList(rowInd: Int, indexInt: Int, indexList: [Int]) -> Int {
+    func getAdjustedIndexOnIndexList(indexInt: Int, indexList: [Int]) -> Int {
         var focusIndex: Int = 0
         while focusIndex < indexList.count && indexList[focusIndex] <= (indexInt+focusIndex) {
             focusIndex += 1
         }
         return indexInt + focusIndex
     }
+
+    func isValidBuldingTileIndex(x: Int, y: Int) {
+        if x < 0 || y < 0 {
+            return false
+        }
+        if x >= columns || y >= rows {
+            return false
+        }
+        return true
+    }
+
+    func getActorOnTile(x: Int, y: Int) -> GameActor? {
+        if !isValidBuldingTileIndex(x: x, y: y) {
+            return nil
+        }
+        for focusActor in actorList {
+            if focusActor.buildingXPos == x && focusActor.buildingYPos == y {
+                return focusActor
+            }
+        }
+        return nil
+    }
     
     func addTileOnAvailableColumn(rowInd: Int, tileType: TileType) {
         let takenTilesOnRow: [Int] = getTakenTileInds(rowInd: rowInd)
         let maxColumnIndPick: Int = columns - takenTilesOnRow.count
         var columnPick: Int = Int.random(in: 0..<maxColumnIndPick)
-        columnPick = getAdjustedIndexOnIndexList(rowInd: rowInd, indexInt: columnPick, indexList: takenTilesOnRow)
+        columnPick = getAdjustedIndexOnIndexList(indexInt: columnPick, indexList: takenTilesOnRow)
         let newTile: Tile = Tile(tileType: tileType)
         
         self.buildingGrid[rowInd][columnPick] = newTile
@@ -109,12 +156,30 @@ class GameModel: ObservableObject {
     
     // Actor behavior
     
-    
+    func updateHallMonitor(actor: GameActor) {
+        
+    }
+
+    func updatePlayer(actor: GameActor) {
+
+    }
+
+    // This runs every time the player is moved
+    func updateActors() {
+        for focusActor in actorList {
+            switch focusActor.type {
+            case ActorType.HALL_MONITOR:
+                updateHallMonitor(focusActor)
+            case ActorType.PLAYER:
+                updatePlayer(focusActor)
+            }
+        }
+    }
     
     // Player buttons
     
     func movePlayer(dir: Int) {
-        
+        updateActors()
     }
     
     func playerInteract() {

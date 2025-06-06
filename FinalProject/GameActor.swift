@@ -12,14 +12,33 @@ enum ActorType {
     case HALL_MONITOR
 }
 
+enum ActorFaceDirection: Int {
+    case NONE
+    case LEFT
+    case RIGHT
+}
+
 struct GameActor {
+    static let imageDict: Dictionary = [
+        ActorType.PLAYER : "square.fill",
+        ActorType.HALL_MONITOR : "pencil",
+    ]
+
+    var buildingXPos: Int
+    var buildingYPos: Int
+    var facing: ActorFaceDirection
+    var type: ActorType
     
 }
 
 struct GameActorView: View {
     var actor: GameActor
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Image(systemName: actor.imageDict[actor.type] ?? "heart.fill")
+                .resizable()
+                // flipping for right direction button
+                .scaleEffect(x: (actor.facing == ActorFaceDirection.LEFT ? -1.0 : 1.0), y: 1.0)
+                .padding(0)
     }
 }
 
