@@ -27,7 +27,7 @@ struct TaskView: View {
                 Divider()
             }
         }
-        Text("Tasks completed: \(completed)")
+        Text("Tasks completed: \(completed)/\(total)")
     }
 }
 #Preview {

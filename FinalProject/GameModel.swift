@@ -34,7 +34,7 @@ class GameModel: ObservableObject {
     }
 
     func initiatePlayer() {
-        player = GameActor(buildingXPos: 0, buildingYPos: rows-2, facing: ActorFaceDirection.LEFT, type: ActorType.PLAYER)
+        player = GameActor(buildingXPos: 0, buildingYPos: 0, facing: ActorFaceDirection.LEFT, type: ActorType.PLAYER)
         actorList.append(player)
     }
 

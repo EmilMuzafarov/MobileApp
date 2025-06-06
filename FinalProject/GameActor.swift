@@ -20,7 +20,7 @@ enum ActorFaceDirection: Int {
 
 struct GameActor {
     static let imageDict: Dictionary = [
-        ActorType.PLAYER : "square.fill",
+        ActorType.PLAYER : "person.fill",
         ActorType.HALL_MONITOR : "pencil",
     ]
 
@@ -33,6 +33,9 @@ struct GameActor {
 
 struct GameActorView: View {
     var actor: GameActor
+    var color: Color {
+            actor.type == .PLAYER ? .red : .black
+        }
     var body: some View {
         Image(systemName: GameActor.imageDict[actor.type] ?? "heart.fill")
                 .resizable()
@@ -40,6 +43,7 @@ struct GameActorView: View {
                 // flipping for right direction button
                 .scaleEffect(x: (actor.facing == ActorFaceDirection.LEFT ? -1.0 : 1.0), y: 1.0)
                 .padding(0)
+                .foregroundColor(color)
     }
 }
 

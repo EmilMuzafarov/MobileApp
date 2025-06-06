@@ -26,7 +26,6 @@ struct GameView: View {
             ForEach(0 ..< model.actorList.count, id:\.self) { actorInd in
                 GameActorView(actor: model.actorList[actorInd])
                     .offset(x: CGFloat(model.actorList[actorInd].buildingXPos-3) * 32.0, y: (CGFloat(model.rows-model.actorList[actorInd].buildingYPos)-4) * 32.0)
-                    .foregroundColor(Color.red)
             }
         }
     }

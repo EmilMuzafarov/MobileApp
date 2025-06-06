@@ -8,24 +8,34 @@
 import SwiftUI
 let tasks: [String] = ["Homework", "Attendance"]
 var completed = 0
+var total = tasks.count
 struct MainGameView: View {
     @State private var showTask = false
     var body: some View {
-        VStack {
-            GameView()
-            HStack {
-                HStack(spacing: 0.0) {
-                    GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_LEFT) {
-                        
+        NavigationStack {
+            VStack {
+                GameControlButton(buttonType: ButtonConstants.ButtonType.TO_DO_BUTTON) {
+                    showTask = true
+                }
+                .offset(x:150, y:-50)
+                GameView()
+                HStack {
+                    HStack(spacing: 0.0) {
+                        GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_LEFT) {
+                            
+                        }
+                        GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_RIGHT) {
+                            
+                        }
                     }
-                    GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_RIGHT) {
+                    Spacer()
+                    GameControlButton(buttonType: ButtonConstants.ButtonType.PLAYER_INTERACT) {
                         
                     }
                 }
-                Spacer()
-                GameControlButton(buttonType: ButtonConstants.ButtonType.PLAYER_INTERACT) {
-                    
-                }
+            }
+            .navigationDestination(isPresented: $showTask) {
+                TaskView()
             }
         }
     }
