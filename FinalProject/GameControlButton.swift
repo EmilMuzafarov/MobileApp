@@ -23,9 +23,9 @@ struct ButtonConstants {
     ]
     
     static let buttonSizes: Dictionary = [
-        ButtonType.MOVE_PLAYER_LEFT : CGSize(width: 150, height: 150),
-        ButtonType.MOVE_PLAYER_RIGHT : CGSize(width: 150, height: 150),
-        ButtonType.PLAYER_INTERACT : CGSize(width: 175, height: 175),
+        ButtonType.MOVE_PLAYER_LEFT : CGSize(width: 100, height: 100),
+        ButtonType.MOVE_PLAYER_RIGHT : CGSize(width: 100, height: 100),
+        ButtonType.PLAYER_INTERACT : CGSize(width: 125, height: 125),
         ButtonType.TO_DO_BUTTON : CGSize(width: 100, height: 100),
     ]
 

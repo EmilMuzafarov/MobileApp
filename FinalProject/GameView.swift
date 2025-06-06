@@ -28,6 +28,7 @@ struct GameView: View {
                     .offset(x: CGFloat(model.actorList[actorInd].buildingXPos-3) * 32.0, y: (CGFloat(model.rows-model.actorList[actorInd].buildingYPos)-5.5) * (32.0+floorSpacing))
             }
         }
+        
     }
 }
 
