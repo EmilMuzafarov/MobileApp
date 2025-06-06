@@ -8,9 +8,12 @@
 import Foundation
 
 class GameModel: ObservableObject {
+    // all params need to be pre-initialized
+    
     @Published var buildingGrid: [[Tile]] = []
     @Published var actorList: [GameActor] = []
-    @Published var player: GameActor
+    // unused initializer, required to init to compile
+    @Published var player: GameActor = GameActor(buildingXPos: 0, buildingYPos: 0, facing: ActorFaceDirection.RIGHT, type: ActorType.PLAYER)
     //@Published var taskList: [GameTask] = []
     var rows: Int = 10
     var columns: Int = 7
@@ -31,7 +34,7 @@ class GameModel: ObservableObject {
     }
 
     func initiatePlayer() {
-        player = GameActor(buildingXPos: 0, buildingYPos: rows-2, type: ActorType.PLAYER, facing: ActorFaceDirection.LEFT)
+        player = GameActor(buildingXPos: 0, buildingYPos: rows-2, facing: ActorFaceDirection.LEFT, type: ActorType.PLAYER)
         actorList.append(player)
     }
 
@@ -39,12 +42,12 @@ class GameModel: ObservableObject {
         var existingHallMonitorInds: [Int] = []
         for hallMonitorInd in 0..<hallMonitorAmount {
             var rowPick: Int = Int.random(in: 0..<(rows-existingHallMonitorInds.count))
-            rowPick = getAdjustedIndexOnIndexList(rowPick, existingHallMonitorInds)
+            rowPick = getAdjustedIndexOnIndexList(indexInt: rowPick, indexList: existingHallMonitorInds)
             existingHallMonitorInds.append(rowPick)
             
             let columnPick: Int = Int.random(in: 0..<(columns))
             let direction: ActorFaceDirection = (Int.random(in: 0...1) == 1 ? ActorFaceDirection.LEFT : ActorFaceDirection.RIGHT)
-            let newHallMonitor: GameActor = GameActor(buildingXPos: columnPick, buildingYPos: rowPick, type: ActorType.HALL_MONITOR, facing: direction)
+            let newHallMonitor: GameActor = GameActor(buildingXPos: columnPick, buildingYPos: rowPick, facing: direction, type: ActorType.HALL_MONITOR)
             actorList.append(newHallMonitor)
         }
     }
@@ -85,7 +88,7 @@ class GameModel: ObservableObject {
         return indexInt + focusIndex
     }
 
-    func isValidBuldingTileIndex(x: Int, y: Int) {
+    func isValidBuldingTileIndex(x: Int, y: Int) -> Bool {
         if x < 0 || y < 0 {
             return false
         }
@@ -127,7 +130,7 @@ class GameModel: ObservableObject {
             }
             // Pick column, if on or after stair, adjust to allow for last column to be chosen
             var columnPick: Int = Int.random(in: 0..<maxColumnIndPick)
-            if columnPick >= currentStairInd {
+            if columnPick >= currentStairInd && currentStairInd != -1 {
                 columnPick += 1
             }
             // Stair assignments
@@ -169,9 +172,9 @@ class GameModel: ObservableObject {
         for focusActor in actorList {
             switch focusActor.type {
             case ActorType.HALL_MONITOR:
-                updateHallMonitor(focusActor)
+                updateHallMonitor(actor: focusActor)
             case ActorType.PLAYER:
-                updatePlayer(focusActor)
+                updatePlayer(actor: focusActor)
             }
         }
     }

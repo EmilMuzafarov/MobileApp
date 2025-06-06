@@ -23,9 +23,9 @@
             filePath = "FinalProject/GameModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "getAdjustedIndexOnIndexList(rowInd:indexInt:indexList:)"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "addDefaultTiles()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -34,8 +34,9 @@ struct GameActor {
 struct GameActorView: View {
     var actor: GameActor
     var body: some View {
-        Image(systemName: actor.imageDict[actor.type] ?? "heart.fill")
+        Image(systemName: GameActor.imageDict[actor.type] ?? "heart.fill")
                 .resizable()
+                .frame(width: 32, height: 32)
                 // flipping for right direction button
                 .scaleEffect(x: (actor.facing == ActorFaceDirection.LEFT ? -1.0 : 1.0), y: 1.0)
                 .padding(0)
@@ -43,5 +44,5 @@ struct GameActorView: View {
 }
 
 #Preview {
-    GameActorView(actor: GameActor())
+    GameActorView(actor: GameActor(buildingXPos: 0, buildingYPos: 0, facing: ActorFaceDirection.RIGHT, type: ActorType.PLAYER))
 }
