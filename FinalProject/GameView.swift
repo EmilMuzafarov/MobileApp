@@ -9,15 +9,15 @@ import SwiftUI
 
 struct GameView: View {
     @EnvironmentObject var model: GameModel
+    let floorSpacing: CGFloat = 10.0
     var body: some View {
         ZStack {
-            VStack{
+            VStack(spacing: floorSpacing){
                 ForEach(0 ..< model.rows, id:\.self) { a in
                     HStack(spacing: 0) {
                         ForEach(0 ..< model.columns, id:\.self) { b in
                             TileView(tile: model.buildingGrid[a][b])
                                 .padding(0)
-                            
                         }
                     }
                     .padding(0)
@@ -25,7 +25,7 @@ struct GameView: View {
             }
             ForEach(0 ..< model.actorList.count, id:\.self) { actorInd in
                 GameActorView(actor: model.actorList[actorInd])
-                    .offset(x: CGFloat(model.actorList[actorInd].buildingXPos-3) * 32.0, y: (CGFloat(model.rows-model.actorList[actorInd].buildingYPos)-4) * 32.0)
+                    .offset(x: CGFloat(model.actorList[actorInd].buildingXPos-3) * 32.0, y: (CGFloat(model.rows-model.actorList[actorInd].buildingYPos)-5.5) * (32.0+floorSpacing))
             }
         }
     }

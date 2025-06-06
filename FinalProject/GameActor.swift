@@ -43,7 +43,8 @@ struct GameActorView: View {
                 // flipping for right direction button
                 .scaleEffect(x: (actor.facing == ActorFaceDirection.LEFT ? -1.0 : 1.0), y: 1.0)
                 .padding(0)
-                .foregroundColor(color)
+                .foregroundColor(Color.blue)
+                //.foregroundColor(color)
     }
 }
 
