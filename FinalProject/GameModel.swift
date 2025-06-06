@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class GameModel: ObservableObject {
     // all params need to be pre-initialized
@@ -40,7 +41,7 @@ class GameModel: ObservableObject {
 
     func initiateHallMonitors() {
         var existingHallMonitorInds: [Int] = []
-        for hallMonitorInd in 0..<hallMonitorAmount {
+        for _hallMonitorInd in 0..<hallMonitorAmount {
             var rowPick: Int = Int.random(in: 0..<(rows-existingHallMonitorInds.count))
             rowPick = getAdjustedIndexOnIndexList(indexInt: rowPick, indexList: existingHallMonitorInds)
             existingHallMonitorInds.append(rowPick)
@@ -160,7 +161,22 @@ class GameModel: ObservableObject {
     // Actor behavior
     
     func updateHallMonitor(actor: GameActor) {
+        let dir: Int = (actor.facing==ActorFaceDirection.RIGHT ? -1 : 1)
         
+        let newPos: CGPoint = CGPoint(x: actor.buildingXPos+dir, y: player.buildingYPos)
+        if !isValidBuldingTileIndex(x: Int(newPos.x), y: Int(newPos.y)) {
+            withAnimation {
+                if actor.facing == ActorFaceDirection.LEFT {
+                    actor.facing = ActorFaceDirection.RIGHT
+                } else {
+                    actor.facing = ActorFaceDirection.LEFT
+                }
+            }
+        } else {
+            withAnimation {
+                player.buildingXPos = Int(newPos.x)
+            }
+        }
     }
 
     func updatePlayer(actor: GameActor) {
@@ -182,6 +198,24 @@ class GameModel: ObservableObject {
     // Player buttons
     
     func movePlayer(dir: Int) {
+    
+        let newPos: CGPoint = CGPoint(x: player.buildingXPos+dir, y: player.buildingYPos)
+        if !isValidBuldingTileIndex(x: Int(newPos.x), y: Int(newPos.y)) {
+            return
+        }
+        
+        
+        if dir == -1 {
+            player.facing = ActorFaceDirection.LEFT
+        } else if dir == 1 {
+            player.facing = ActorFaceDirection.RIGHT
+        }
+        print(player.buildingXPos)
+        print(newPos.x)
+        print(Int(newPos.x))
+        player.buildingXPos = Int(newPos.x)
+        print(player.buildingXPos)
+        
         updateActors()
     }
     

@@ -18,7 +18,7 @@ enum ActorFaceDirection: Int {
     case RIGHT
 }
 
-struct GameActor {
+class GameActor {
     static let imageDict: Dictionary = [
         ActorType.PLAYER : "person.fill",
         ActorType.HALL_MONITOR : "pencil",
@@ -29,10 +29,17 @@ struct GameActor {
     var facing: ActorFaceDirection
     var type: ActorType
     
+    init(buildingXPos: Int, buildingYPos: Int, facing: ActorFaceDirection, type: ActorType) {
+        self.buildingXPos = buildingXPos
+        self.buildingYPos = buildingYPos
+        self.facing = facing
+        self.type = type
+    }
+    
 }
 
 struct GameActorView: View {
-    var actor: GameActor
+    @State var actor: GameActor
     var color: Color {
             actor.type == .PLAYER ? .red : .black
         }
