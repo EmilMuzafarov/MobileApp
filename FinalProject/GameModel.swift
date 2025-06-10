@@ -21,6 +21,8 @@ import SwiftUI
     var hallMonitorAmount: Int = 4
     var buttonUsable: Bool = false
     
+    
+    
     init() {
         initiateGame()
         initiateActors()
@@ -39,10 +41,16 @@ import SwiftUI
         player = GameActor(buildingXPos: 0, buildingYPos: 1, facing: ActorFaceDirection.LEFT, type: ActorType.PLAYER)
         actorList.append(player)
     }
-
+    
+    func initGameOverTimeOut() {
+        
+    }
+    
     func initiateHallMonitors() {
         var existingHallMonitorInds: [Int] = []
-        for _hallMonitorInd in 0..<hallMonitorAmount {
+        // prevent spawning on player
+        existingHallMonitorInds.append(player.buildingYPos)
+        for _ in 0..<hallMonitorAmount {
             var rowPick: Int = Int.random(in: 0..<(rows-existingHallMonitorInds.count))
             rowPick = getAdjustedIndexOnIndexList(indexInt: rowPick, indexList: existingHallMonitorInds)
             existingHallMonitorInds.append(rowPick)

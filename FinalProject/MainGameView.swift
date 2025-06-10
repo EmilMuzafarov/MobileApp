@@ -14,30 +14,46 @@ var total = tasks.count
 struct MainGameView: View {
     @Environment(GameModel.self) var model: GameModel
     @State private var showTask = false
+    @State private var timeRemaining = 100
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         NavigationStack {
             ZStack {
-                
                 Image("mainGameBackground")
                     .resizable()
                     .scaledToFill()
                 VStack {
                     VStack {
-                        
                         HStack(alignment: .top) {
-                            
                             ZStack {
-                                Text("Current Floor:")
-                                
-                                    .bold()
-                                    .font(.system(size: 20))
-                                Text(model.player.buildingYPos != 0 ? String(model.player.buildingYPos) : "B")
-                                    .offset(x: 0, y: 36)
-                                    .bold()
-                                    .font(.system(size: 50))
+                                HStack {
+                                    ZStack {
+                                        Text("Current Floor:")
+                                            .offset(x: 0, y: 13)
+                                            .bold()
+                                            .font(.system(size: 20))
+                                        Text(model.player.buildingYPos != 0 ? String(model.player.buildingYPos) : "B")
+                                            .offset(x: 0, y: 43)
+                                            .bold()
+                                            .font(.system(size: 50))
+                                    }
+                                    .padding()
+                                    
+                                    ZStack {
+                                        Text("Time Left:")
+                                            .offset(x: 0, y: 13)
+                                            .bold()
+                                            .font(.system(size: 20))
+                                        
+                                        Text("\(timeRemaining)")
+                                            .offset(x: 0, y: 43)
+                                            .bold()
+                                            .font(.system(size: 50))
+                                    }
+                                }
                             }
-                            .padding()
-                            Spacer()
+                            
                             //.offset(x:-130, y:-95)
                             GameControlButton(buttonType: ButtonConstants.ButtonType.TO_DO_BUTTON) {
                                 showTask = true
@@ -49,7 +65,7 @@ struct MainGameView: View {
                         
                         GameView()
                             .scaleEffect(1.25)
-                            .offset(x: 3, y: -24)
+                            .offset(x: 3, y: -36)
                     }
                     .padding(.bottom, 50)
                     HStack {
@@ -75,6 +91,13 @@ struct MainGameView: View {
             }
             .navigationDestination(isPresented: $showTask) {
                 TaskListView()
+            }
+        }
+        .onReceive(timer) { time in
+            if timeRemaining > 0 {
+                timeRemaining -= 1
+            } else {
+                
             }
         }
     }
