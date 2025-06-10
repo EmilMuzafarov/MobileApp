@@ -22,6 +22,13 @@ enum TileType {
 
 
 struct Tile {
+    static let imageSystemDict: Dictionary = [
+        TileType.EMPTY : "square.fill",
+        TileType.CLASSROOM : "pencil",
+        TileType.LOCKER : "trash",
+        TileType.STAIRS : "stairs"
+    ]
+    
     static let imageDict: Dictionary = [
         TileType.EMPTY : "square.fill",
         TileType.CLASSROOM : "pencil",

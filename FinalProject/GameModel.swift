@@ -36,7 +36,7 @@ import SwiftUI
     }
 
     func initiatePlayer() {
-        player = GameActor(buildingXPos: 0, buildingYPos: 0, facing: ActorFaceDirection.LEFT, type: ActorType.PLAYER)
+        player = GameActor(buildingXPos: 0, buildingYPos: 1, facing: ActorFaceDirection.LEFT, type: ActorType.PLAYER)
         actorList.append(player)
     }
 
@@ -124,14 +124,14 @@ import SwiftUI
     
     func addStairs() {
         for yInd in 0..<rows-1 {
-            var maxColumnIndPick: Int = columns
+            var maxColumnIndPick: Int = columns-1
             let currentStairInd: Int = getFirstStairIndOnRow(rowInd: yInd)
             // Lower amount of available columns if a stair tile exists
             if currentStairInd != -1 {
                 maxColumnIndPick -= 1
             }
             // Pick column, if on or after stair, adjust to allow for last column to be chosen
-            var columnPick: Int = Int.random(in: 0..<maxColumnIndPick)
+            var columnPick: Int = Int.random(in: 1..<maxColumnIndPick)
             if columnPick >= currentStairInd && currentStairInd != -1 {
                 columnPick += 1
             }
@@ -210,10 +210,8 @@ import SwiftUI
     }
     
     func movePlayer(dir: Int) {
-        
-        print(CGPoint(x: player.buildingXPos, y: player.buildingYPos))
         let newPos: CGPoint = CGPoint(x: player.buildingXPos+dir, y: player.buildingYPos)
-        print(newPos)
+        
         if !isValidBuldingTileIndex(x: Int(newPos.x), y: Int(newPos.y)) {
             return
         }
@@ -230,8 +228,48 @@ import SwiftUI
         updateActors()
     }
     
-    func playerInteract() {
+    func playerWalkStairs(dir: Int) {
+        let newPos: CGPoint = CGPoint(x: player.buildingXPos, y: player.buildingYPos+dir)
         
+        if !isValidBuldingTileIndex(x: Int(newPos.x), y: Int(newPos.y)) {
+            return
+        }
+        
+        withAnimation(.easeOut(duration: 0.2)) {
+            player.buildingYPos = Int(newPos.y)
+        }
+        
+        updateActors()
+    }
+    
+    func playerInteract() {
+        var playerStandingTile: Tile = buildingGrid[rows-player.buildingYPos-1][player.buildingXPos]
+        switch playerStandingTile.tileType {
+        case .EMPTY:
+            break
+        case .CLASSROOM:
+            classroomInteract(classroomTile: playerStandingTile)
+        case .LOCKER:
+            lockerInteract(lockerTile: playerStandingTile)
+        case .STAIRS:
+            stairInteract(stairTile: playerStandingTile)
+        }
+    }
+    
+    func classroomInteract(classroomTile: Tile) {
+        
+    }
+    
+    func lockerInteract(lockerTile: Tile) {
+        
+    }
+    
+    func stairInteract(stairTile: Tile) {
+        if stairTile.stairDirection == StairDirection.UP {
+            playerWalkStairs(dir: 1)
+        } else {
+            playerWalkStairs(dir: -1)
+        }
     }
     
 }

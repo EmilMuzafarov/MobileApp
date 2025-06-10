@@ -14,35 +14,44 @@ struct MainGameView: View {
     @State private var showTask = false
     var body: some View {
         NavigationStack {
-            VStack {
-                VStack{
-                    GameControlButton(buttonType: ButtonConstants.ButtonType.TO_DO_BUTTON) {
-                        showTask = true
-                    }
-                    .offset(x:150, y:-50)
-                    .padding(10)
-                    GameView()
-                        .scaleEffect(1.25)
-                }
-                .padding(.bottom, 50)
-                HStack {
-                    HStack(spacing: 5.0) {
-                        GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_LEFT) {
-                            model.movePlayer(dir: -1)
+            ZStack {
+                
+                Image("mainGameBackground")
+                    .resizable()
+                    .scaledToFill()
+                VStack {
+                    VStack {
+                        GameControlButton(buttonType: ButtonConstants.ButtonType.TO_DO_BUTTON) {
+                            showTask = true
                         }
-                        GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_RIGHT) {
-                            model.movePlayer(dir: 1)
+                        .offset(x:130, y:-80)
+                        .padding(10)
+                        
+                        GameView()
+                            .scaleEffect(1.25)
+                            .offset(x: 3, y: -24)
+                    }
+                    .padding(.bottom, 50)
+                    HStack {
+                        HStack(spacing: 5.0) {
+                            GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_LEFT) {
+                                model.movePlayer(dir: -1)
+                            }
+                            GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_RIGHT) {
+                                model.movePlayer(dir: 1)
+                            }
                         }
-                    }
-                    .padding(5)
-                    Spacer()
-                    GameControlButton(buttonType: ButtonConstants.ButtonType.PLAYER_INTERACT) {
-                        model.playerInteract()
-                    }
+                        .padding(5)
+                        Spacer()
+                        GameControlButton(buttonType: ButtonConstants.ButtonType.PLAYER_INTERACT) {
+                            model.playerInteract()
+                        }
                         .opacity(model.buttonUsable ? 1.0 : 0.25)
                         .padding(10)
+                        .disabled(!model.buttonUsable)
                     }
-                .padding(10)
+                    .padding(10)
+                }
             }
             .navigationDestination(isPresented: $showTask) {
                 TaskView()
