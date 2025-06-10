@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
-let tasks: [String] = ["Homework", "Attendance"]
+var fromTile: [Tile] = []
+var toTile: [Tile] = []
+let tasks: [String] = ["Deliver a note from locker 2 to classroom 6", "Bring Attendance from classroom 5 to the 1st floor locker", "Bring supplies from locker 5 to classroom 2", "Take the gym clothes from the basement locker to classroom 7", "Take handouts from locker 4 to classroom 8"]
 var completed = 0
 var total = tasks.count
 struct MainGameView: View {
@@ -72,7 +74,7 @@ struct MainGameView: View {
                 }
             }
             .navigationDestination(isPresented: $showTask) {
-                TaskView()
+                TaskListView()
             }
         }
     }
