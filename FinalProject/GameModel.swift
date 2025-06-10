@@ -189,6 +189,8 @@ import SwiftUI
     func updateActors() {
         var xMonitors: [Int] = []
         for focusActor in actorList {
+            focusActor.actorPhase += 1
+            
             switch focusActor.type {
             case ActorType.HALL_MONITOR:
                 updateHallMonitor(actor: focusActor)
@@ -199,7 +201,6 @@ import SwiftUI
             }
             xMonitors.append(focusActor.buildingXPos)
         }
-        print(xMonitors)
     }
     
     // Player buttons

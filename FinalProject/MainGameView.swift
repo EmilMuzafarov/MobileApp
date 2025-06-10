@@ -21,11 +21,29 @@ struct MainGameView: View {
                     .scaledToFill()
                 VStack {
                     VStack {
-                        GameControlButton(buttonType: ButtonConstants.ButtonType.TO_DO_BUTTON) {
-                            showTask = true
+                        
+                        HStack(alignment: .top) {
+                            
+                            ZStack {
+                                Text("Current Floor:")
+                                
+                                    .bold()
+                                    .font(.system(size: 20))
+                                Text(model.player.buildingYPos != 0 ? String(model.player.buildingYPos) : "B")
+                                    .offset(x: 0, y: 36)
+                                    .bold()
+                                    .font(.system(size: 50))
+                            }
+                            .padding()
+                            Spacer()
+                            //.offset(x:-130, y:-95)
+                            GameControlButton(buttonType: ButtonConstants.ButtonType.TO_DO_BUTTON) {
+                                showTask = true
+                            }
+                            .offset(x:0, y:0)
+                            .padding(10)
                         }
-                        .offset(x:130, y:-80)
-                        .padding(10)
+                        .offset(x: 0, y: -70)
                         
                         GameView()
                             .scaleEffect(1.25)

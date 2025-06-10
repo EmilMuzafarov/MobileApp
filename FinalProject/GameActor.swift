@@ -19,15 +19,21 @@ enum ActorFaceDirection: Int {
 }
 
 @Observable class GameActor: Identifiable {
-    static let imageDict: Dictionary = [
+    static let systemImageDict: Dictionary = [
         ActorType.PLAYER : "person.fill",
         ActorType.HALL_MONITOR : "pencil",
+    ]
+    
+    static let animImageDict: Dictionary<ActorType, [String]> = [
+        ActorType.PLAYER : ["standingBeaver", "walkingBeaver"],
+        ActorType.HALL_MONITOR : ["lockerDoor"],
     ]
 
     var buildingXPos: Int
     var buildingYPos: Int
     var facing: ActorFaceDirection
     var type: ActorType
+    var actorPhase: Int = 0
     
     init(buildingXPos: Int, buildingYPos: Int, facing: ActorFaceDirection, type: ActorType) {
         self.buildingXPos = buildingXPos
@@ -44,7 +50,8 @@ struct GameActorView: View {
             actor.type == .PLAYER ? .red : .black
         }
     var body: some View {
-        Image(systemName: GameActor.imageDict[actor.type] ?? "heart.fill")
+        Image(GameActor.animImageDict[actor.type]?[actor.actorPhase % (GameActor.animImageDict[actor.type]?.count ?? 0)] ?? "heart.fill")
+            .interpolation(.none)
                 .resizable()
                 .frame(width: 32, height: 32)
                 // flipping for right direction button

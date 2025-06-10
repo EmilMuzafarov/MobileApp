@@ -24,9 +24,6 @@ struct GameView: View {
                 }
             }
             ForEach(model.actorList) { actor in
-                if actor.type == ActorType.PLAYER {
-                    let _ = print("player!")
-                }
                 GameActorView(actor: actor)
                     .offset(x: CGFloat(actor.buildingXPos-3) * 38.0, y: (CGFloat(model.rows-actor.buildingYPos)-5.5) * (32.0+floorSpacing))
                 Text("\(actor.buildingXPos)")

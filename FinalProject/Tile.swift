@@ -30,10 +30,8 @@ struct Tile {
     ]
     
     static let imageDict: Dictionary = [
-        TileType.EMPTY : "square.fill",
-        TileType.CLASSROOM : "pencil",
-        TileType.LOCKER : "trash",
-        TileType.STAIRS : "stairs"
+        TileType.CLASSROOM : "classroomDoor",
+        TileType.LOCKER : "lockerDoor",
     ]
     
     static let stairImageDict: Dictionary = [
@@ -53,12 +51,20 @@ struct TileView: View {
     var body: some View {
         if tile.tileType == TileType.STAIRS {
             Image(systemName: Tile.stairImageDict[tile.stairDirection] ?? "heart.fill")
+                .interpolation(.none)
                 .resizable()
                 .frame(width: 32, height: 32)
                 .padding(0)
             
+        } else if Tile.imageDict.keys.contains(tile.tileType) {
+            Image(Tile.imageDict[tile.tileType] ?? "heart.fill")
+                .interpolation(.none)
+                .resizable()
+                .frame(width: 32, height: 32)
+                .padding(0)
         } else {
-            Image(systemName: Tile.imageDict[tile.tileType] ?? "heart.fill")
+            Image("")
+                .interpolation(.none)
                 .resizable()
                 .frame(width: 32, height: 32)
                 .padding(0)
