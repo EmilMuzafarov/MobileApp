@@ -107,6 +107,10 @@ import SwiftUI
         }
         return true
     }
+    
+    func isOverlappingPlayer(actor: GameActor) -> Bool {
+        return actor.buildingXPos == player.buildingXPos && actor.buildingYPos == player.buildingYPos
+    }
 
     func getActorOnTile(x: Int, y: Int) -> GameActor? {
         if !isValidBuldingTileIndex(x: x, y: y) {
@@ -170,6 +174,10 @@ import SwiftUI
     // Actor behavior
     
     func updateHallMonitor(actor: GameActor) {
+        if isOverlappingPlayer(actor: actor) {
+            
+        }
+        
         let dir: Int = (actor.facing==ActorFaceDirection.LEFT ? -1 : 1)
         
         let newPos: CGPoint = CGPoint(x: actor.buildingXPos+dir, y: player.buildingYPos)
