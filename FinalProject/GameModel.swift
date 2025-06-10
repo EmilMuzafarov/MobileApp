@@ -10,24 +10,36 @@ import SwiftUI
 
 @Observable class GameModel {
     // all params need to be pre-initialized
-    
     var buildingGrid: [[Tile]] = []
     var actorList: [GameActor] = []
     // unused initializer, required to init to compile
     var player: GameActor = GameActor(buildingXPos: 0, buildingYPos: 0, facing: ActorFaceDirection.RIGHT, type: ActorType.PLAYER)
-    //@Published var taskList: [GameTask] = []
+    var tasks: [String] = ["Deliver a note from locker 2 to classroom 6", "Bring Attendance from classroom 5 to the 1st floor locker", "Bring supplies from locker 5 to classroom 2", "Take the gym clothes from the basement locker to classroom 7", "Take handouts from locker 4 to classroom 8"]
+    var fromTileXpos: [Int] = [2, 5, 5, 0, 4]
+    var fromTileYpos: [Int] = [0, 3, 4, 4, 0]
+    var fromTile: [Tile] = []
+    var toTileXpos: [Int] = [6, 1, 2, 7, 8]
+    var toTileYpos: [Int] = [6, 1, 5, 0, 5]
+    var toTile: [Tile] = []
+    var taskList: [GameTask] = []
     var rows: Int = 10
     var columns: Int = 7
     var hallMonitorAmount: Int = 4
     var buttonUsable: Bool = false
-    
-    
-    
+    var isDone1: Bool = false
+    var isDone2: Bool = false
     init() {
         initiateGame()
         initiateActors()
+        initializeTasks()
     }
-    
+    func initializeTasks() {
+        fromTile = [buildingGrid[2][0], buildingGrid[5][3], buildingGrid[5][4], buildingGrid[0][4], buildingGrid[4][0]]
+        toTile = [buildingGrid[6][6], buildingGrid[1][1], buildingGrid[2][5], buildingGrid[7][0], buildingGrid[8][5]]
+        for i in 0..<tasks.count {
+            taskList.append(GameTask(fromTile: fromTile[i], toTile: toTile[i], title: tasks[i]))
+        }
+    }
     func initiateGame() {
         buildTiles()
     }
@@ -41,16 +53,12 @@ import SwiftUI
         player = GameActor(buildingXPos: 0, buildingYPos: 1, facing: ActorFaceDirection.LEFT, type: ActorType.PLAYER)
         actorList.append(player)
     }
-    
-    func initGameOverTimeOut() {
-        
+    func returnGrid() -> [[Tile]] {
+        return buildingGrid
     }
-    
     func initiateHallMonitors() {
         var existingHallMonitorInds: [Int] = []
-        // prevent spawning on player
-        existingHallMonitorInds.append(player.buildingYPos)
-        for _ in 0..<hallMonitorAmount {
+        for _hallMonitorInd in 0..<hallMonitorAmount {
             var rowPick: Int = Int.random(in: 0..<(rows-existingHallMonitorInds.count))
             rowPick = getAdjustedIndexOnIndexList(indexInt: rowPick, indexList: existingHallMonitorInds)
             existingHallMonitorInds.append(rowPick)
@@ -106,10 +114,6 @@ import SwiftUI
             return false
         }
         return true
-    }
-    
-    func isOverlappingPlayer(actor: GameActor) -> Bool {
-        return actor.buildingXPos == player.buildingXPos && actor.buildingYPos == player.buildingYPos
     }
 
     func getActorOnTile(x: Int, y: Int) -> GameActor? {
@@ -174,10 +178,6 @@ import SwiftUI
     // Actor behavior
     
     func updateHallMonitor(actor: GameActor) {
-        if isOverlappingPlayer(actor: actor) {
-            
-        }
-        
         let dir: Int = (actor.facing==ActorFaceDirection.LEFT ? -1 : 1)
         
         let newPos: CGPoint = CGPoint(x: actor.buildingXPos+dir, y: player.buildingYPos)
@@ -198,6 +198,9 @@ import SwiftUI
 
     func updatePlayer(actor: GameActor) {
         buttonUsable = canPlayerInteract()
+        
+        
+        
         print(buttonUsable)
     }
 
@@ -266,19 +269,30 @@ import SwiftUI
             break
         case .CLASSROOM:
             classroomInteract(classroomTile: playerStandingTile)
+            break
         case .LOCKER:
             lockerInteract(lockerTile: playerStandingTile)
+            break
         case .STAIRS:
             stairInteract(stairTile: playerStandingTile)
+            break
         }
     }
     
     func classroomInteract(classroomTile: Tile) {
-        
+        for i in 0..<toTile.count {
+            if (true) {
+                isDone2=true
+            }
+        }
     }
     
     func lockerInteract(lockerTile: Tile) {
-        
+        for i in 0..<toTile.count {
+            if (player.buildingXPos == 2) {
+                isDone1=true
+            }
+        }
     }
     
     func stairInteract(stairTile: Tile) {
