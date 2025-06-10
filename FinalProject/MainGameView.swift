@@ -14,49 +14,35 @@ var total = tasks.count
 struct MainGameView: View {
     @Environment(GameModel.self) var model: GameModel
     @State private var showTask = false
-    @State private var timeRemaining = 100
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
+    @State var win = total==completed
     var body: some View {
         NavigationStack {
             ZStack {
+                
                 Image("mainGameBackground")
                     .resizable()
                     .scaledToFill()
                 VStack {
                     VStack {
+                        
                         HStack(alignment: .top) {
-                            ZStack {
-                                HStack {
-                                    ZStack {
-                                        Text("Current Floor:")
-                                            .offset(x: 0, y: 13)
-                                            .bold()
-                                            .font(.system(size: 20))
-                                        Text(model.player.buildingYPos != 0 ? String(model.player.buildingYPos) : "B")
-                                            .offset(x: 0, y: 43)
-                                            .bold()
-                                            .font(.system(size: 50))
-                                    }
-                                    .padding()
-                                    
-                                    ZStack {
-                                        Text("Time Left:")
-                                            .offset(x: 0, y: 13)
-                                            .bold()
-                                            .font(.system(size: 20))
-                                        
-                                        Text("\(timeRemaining)")
-                                            .offset(x: 0, y: 43)
-                                            .bold()
-                                            .font(.system(size: 50))
-                                    }
-                                }
-                            }
                             
+                            ZStack {
+                                Text("Current Floor:")
+                                
+                                    .bold()
+                                    .font(.system(size: 20))
+                                Text(model.player.buildingYPos != 0 ? String(model.player.buildingYPos) : "B")
+                                    .offset(x: 0, y: 36)
+                                    .bold()
+                                    .font(.system(size: 50))
+                            }
+                            .padding()
+                            Spacer()
                             //.offset(x:-130, y:-95)
                             GameControlButton(buttonType: ButtonConstants.ButtonType.TO_DO_BUTTON) {
                                 showTask = true
+                                win = total==completed
                             }
                             .offset(x:0, y:0)
                             .padding(10)
@@ -65,22 +51,32 @@ struct MainGameView: View {
                         
                         GameView()
                             .scaleEffect(1.25)
-                            .offset(x: 3, y: -36)
+                            .offset(x: 3, y: -24)
                     }
                     .padding(.bottom, 50)
                     HStack {
                         HStack(spacing: 5.0) {
                             GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_LEFT) {
                                 model.movePlayer(dir: -1)
+                                fromTile = [model.buildingGrid[0][0]]
+                                completed -= 1
+                                win = total==completed
+                                print(win)
+                                print(completed)
                             }
                             GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_RIGHT) {
                                 model.movePlayer(dir: 1)
+                                fromTile = [model.buildingGrid[0][0]]
+                                completed += 1
+                                win = total==completed
+                                print(completed)
                             }
                         }
                         .padding(5)
                         Spacer()
                         GameControlButton(buttonType: ButtonConstants.ButtonType.PLAYER_INTERACT) {
                             model.playerInteract()
+                            fromTile = [model.buildingGrid[0][0]]
                         }
                         .opacity(model.buttonUsable ? 1.0 : 0.25)
                         .padding(10)
@@ -92,12 +88,8 @@ struct MainGameView: View {
             .navigationDestination(isPresented: $showTask) {
                 TaskListView()
             }
-        }
-        .onReceive(timer) { time in
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-            } else {
-                
+            .navigationDestination(isPresented: $win) {
+                WinScreen()
             }
         }
     }
