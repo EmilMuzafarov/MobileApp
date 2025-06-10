@@ -7,18 +7,29 @@
 
 import SwiftUI
 
-struct TaskView: View {
+@Observable class GameTask: Identifiable {
     var fromTile: Tile
-    var fromReached: Bool
+    var fromReached: Bool = false
     var toTile: Tile
-    var toReached: Bool
+    var toReached: Bool = false
     var title: String
-    var done: Bool
+    var done: Bool = false
+    
+    init(fromTile: Tile, toTile: Tile, title: String) {
+        self.fromTile = fromTile
+        self.toTile = toTile
+        self.title = title
+    }
+}
+
+struct TaskView: View {
+    @State var task: GameTask
     var body: some View {
-        Text(title)
+        Text(task.title)
             .frame(maxWidth: 350)
     }
 }
+
 struct WinScreen: View {
     @State var restart = false
     var body: some View {
@@ -63,5 +74,5 @@ struct TaskListView: View {
     }
 }
 #Preview {
-    TaskView()
+    TaskView(task: GameTask(fromTile: Tile(tileType: TileType.LOCKER), toTile: Tile(tileType: TileType.CLASSROOM), title: ""))
 }
