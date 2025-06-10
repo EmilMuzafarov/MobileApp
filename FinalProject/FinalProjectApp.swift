@@ -9,10 +9,12 @@ import SwiftUI
 
 @main
 struct FinalProjectApp: App {
+    @State private var model = GameModel()
+    
     var body: some Scene {
         WindowGroup {
             MainGameView()
-                .environmentObject(GameModel())
+                .environment(model)
         }
     }
 }

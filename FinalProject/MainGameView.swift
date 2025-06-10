@@ -10,7 +10,7 @@ let tasks: [String] = ["Homework", "Attendance"]
 var completed = 0
 var total = tasks.count
 struct MainGameView: View {
-    @EnvironmentObject var model: GameModel
+    @Environment(GameModel.self) var model: GameModel
     @State private var showTask = false
     var body: some View {
         NavigationStack {
@@ -39,6 +39,7 @@ struct MainGameView: View {
                     GameControlButton(buttonType: ButtonConstants.ButtonType.PLAYER_INTERACT) {
                         model.playerInteract()
                     }
+                        .opacity(model.buttonUsable ? 1.0 : 0.25)
                         .padding(10)
                     }
                 .padding(10)
@@ -52,5 +53,5 @@ struct MainGameView: View {
 
 #Preview {
     MainGameView()
-        .environmentObject(GameModel())
+        .environment(GameModel())
 }

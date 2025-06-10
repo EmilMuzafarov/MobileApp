@@ -8,17 +8,18 @@
 import Foundation
 import SwiftUI
 
-class GameModel: ObservableObject {
+@Observable class GameModel {
     // all params need to be pre-initialized
     
-    @Published var buildingGrid: [[Tile]] = []
-    @Published var actorList: [GameActor] = []
+    var buildingGrid: [[Tile]] = []
+    var actorList: [GameActor] = []
     // unused initializer, required to init to compile
-    @Published var player: GameActor = GameActor(buildingXPos: 0, buildingYPos: 0, facing: ActorFaceDirection.RIGHT, type: ActorType.PLAYER)
+    var player: GameActor = GameActor(buildingXPos: 0, buildingYPos: 0, facing: ActorFaceDirection.RIGHT, type: ActorType.PLAYER)
     //@Published var taskList: [GameTask] = []
     var rows: Int = 10
     var columns: Int = 7
     var hallMonitorAmount: Int = 4
+    var buttonUsable: Bool = false
     
     init() {
         initiateGame()
@@ -161,7 +162,7 @@ class GameModel: ObservableObject {
     // Actor behavior
     
     func updateHallMonitor(actor: GameActor) {
-        let dir: Int = (actor.facing==ActorFaceDirection.RIGHT ? -1 : 1)
+        let dir: Int = (actor.facing==ActorFaceDirection.LEFT ? -1 : 1)
         
         let newPos: CGPoint = CGPoint(x: actor.buildingXPos+dir, y: player.buildingYPos)
         if !isValidBuldingTileIndex(x: Int(newPos.x), y: Int(newPos.y)) {
@@ -173,48 +174,58 @@ class GameModel: ObservableObject {
                 }
             }
         } else {
-            withAnimation {
-                player.buildingXPos = Int(newPos.x)
+            withAnimation(.easeOut(duration: 0.2)) {
+                actor.buildingXPos = Int(newPos.x)
             }
         }
     }
 
     func updatePlayer(actor: GameActor) {
-
+        buttonUsable = canPlayerInteract()
+        print(buttonUsable)
     }
 
     // This runs every time the player is moved
     func updateActors() {
+        var xMonitors: [Int] = []
         for focusActor in actorList {
             switch focusActor.type {
             case ActorType.HALL_MONITOR:
                 updateHallMonitor(actor: focusActor)
+                break
             case ActorType.PLAYER:
                 updatePlayer(actor: focusActor)
+                break
             }
+            xMonitors.append(focusActor.buildingXPos)
         }
+        print(xMonitors)
     }
     
     // Player buttons
     
-    func movePlayer(dir: Int) {
+    func canPlayerInteract() -> Bool {
+        
+        return buildingGrid[rows-player.buildingYPos-1][player.buildingXPos].tileType != TileType.EMPTY
+    }
     
+    func movePlayer(dir: Int) {
+        
+        print(CGPoint(x: player.buildingXPos, y: player.buildingYPos))
         let newPos: CGPoint = CGPoint(x: player.buildingXPos+dir, y: player.buildingYPos)
+        print(newPos)
         if !isValidBuldingTileIndex(x: Int(newPos.x), y: Int(newPos.y)) {
             return
         }
         
-        
-        if dir == -1 {
-            player.facing = ActorFaceDirection.LEFT
-        } else if dir == 1 {
-            player.facing = ActorFaceDirection.RIGHT
+        withAnimation(.easeOut(duration: 0.2)) {
+            if dir == -1 {
+                player.facing = ActorFaceDirection.LEFT
+            } else if dir == 1 {
+                player.facing = ActorFaceDirection.RIGHT
+            }
+            player.buildingXPos = Int(newPos.x)
         }
-        print(player.buildingXPos)
-        print(newPos.x)
-        print(Int(newPos.x))
-        player.buildingXPos = Int(newPos.x)
-        print(player.buildingXPos)
         
         updateActors()
     }

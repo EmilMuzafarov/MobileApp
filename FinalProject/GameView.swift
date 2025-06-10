@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GameView: View {
-    @EnvironmentObject var model: GameModel
+    @Environment(GameModel.self) var model: GameModel
     let floorSpacing: CGFloat = 10.0
     var body: some View {
         ZStack {
@@ -23,9 +23,14 @@ struct GameView: View {
                     .padding(0)
                 }
             }
-            ForEach(0 ..< model.actorList.count, id:\.self) { actorInd in
-                GameActorView(actor: model.actorList[actorInd])
-                    .offset(x: CGFloat(model.actorList[actorInd].buildingXPos-3) * 32.0, y: (CGFloat(model.rows-model.actorList[actorInd].buildingYPos)-5.5) * (32.0+floorSpacing))
+            ForEach(model.actorList) { actor in
+                if actor.type == ActorType.PLAYER {
+                    let _ = print("player!")
+                }
+                GameActorView(actor: actor)
+                    .offset(x: CGFloat(actor.buildingXPos-3) * 32.0, y: (CGFloat(model.rows-actor.buildingYPos)-5.5) * (32.0+floorSpacing))
+                Text("\(actor.buildingXPos)")
+                    .offset(x: CGFloat(actor.buildingXPos-3) * 32.0, y: (CGFloat(model.rows-actor.buildingYPos)-5.5) * (32.0+floorSpacing))
             }
         }
         
@@ -34,5 +39,5 @@ struct GameView: View {
 
 #Preview {
     GameView()
-        .environmentObject(GameModel())
+        .environment(GameModel())
 }

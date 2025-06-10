@@ -18,7 +18,7 @@ enum ActorFaceDirection: Int {
     case RIGHT
 }
 
-class GameActor {
+@Observable class GameActor: Identifiable {
     static let imageDict: Dictionary = [
         ActorType.PLAYER : "person.fill",
         ActorType.HALL_MONITOR : "pencil",
