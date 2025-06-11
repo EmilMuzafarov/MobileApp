@@ -15,6 +15,7 @@ struct MainGameView: View {
     @Environment(GameModel.self) var model: GameModel
     @State private var showTask = false
     @State var win = total==completed
+    @State var lost = false
     
     @State private var timeRemaining = 100
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -112,11 +113,20 @@ struct MainGameView: View {
             }
             .navigationDestination(isPresented: $win) {
                 WinScreen()
+                    .environment(model)
             }
+            .navigationDestination(isPresented: $lost) {
+                LoseScreen()
+                    .environment(model)
+            }
+        
         //}
         .onReceive(timer) { time in
             if timeRemaining > 0 {
                 timeRemaining -= 1
+            }
+            if timeRemaining <= 0 || model.gameOver == true {
+                lost = true
             }
         }
     }

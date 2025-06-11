@@ -32,6 +32,7 @@ struct TaskView: View {
 }
 
 struct WinScreen: View {
+    @Environment(GameModel.self) var model: GameModel
     @State var restart = false
     var body: some View {
         Text("You Won!")
@@ -39,11 +40,48 @@ struct WinScreen: View {
             .fontWeight(.bold)
             .padding()
             .foregroundColor(.yellow)
-        NavigationStack {
+        
             VStack {
-                Button("Play Again") {
+                Button() {
                     completed=0
                     restart=true
+                    model.masterInit()
+                } label: {
+                    Image("gameOverRetry")
+                        //.resizable()
+                        //.scaleEffect(CGSize(width: 0.2, height: 0.2))
+                }
+                .bold()
+                .cornerRadius(20)
+                .background(.black)
+                .padding(5)
+            }
+            .navigationDestination(isPresented: $restart) {
+                MainGameView()
+            }
+        
+    }
+}
+
+struct LoseScreen: View {
+    @Environment(GameModel.self) var model: GameModel
+    @State var restart = false
+    var body: some View {
+        Text("You Lost!")
+            .font(.title)
+            .fontWeight(.bold)
+            .padding()
+            .foregroundColor(.yellow)
+        
+            VStack {
+                Button() {
+                    completed=0
+                    restart=true
+                    model.masterInit()
+                } label: {
+                    Image("gameOverRetry")
+                        //.resizable()
+                        //.scaleEffect(CGSize(width: 0.2, height: 0.2))
                 }
                 .bold()
                 .font(.title2)
@@ -55,9 +93,10 @@ struct WinScreen: View {
             .navigationDestination(isPresented: $restart) {
                 MainGameView()
             }
-        }
+        
     }
 }
+
 struct TaskListView: View {
     @Environment(GameModel.self) var model: GameModel
     var body: some View {
@@ -78,4 +117,6 @@ struct TaskListView: View {
 }
 #Preview {
     TaskView(task: GameTask(title: "Attendance"))
+    LoseScreen()
+        .environment(GameModel())
 }

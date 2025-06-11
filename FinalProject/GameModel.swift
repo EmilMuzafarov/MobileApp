@@ -32,11 +32,34 @@ import SwiftUI
     var task5_locker_used = false
     var doneList: [Bool] = [false, false, false, false, false]
     init() {
+        masterInit()
+    }
+    func masterInit() {
+        masterReset()
         initiateGame()
         initiateActors()
         findLockers()
         findClassrooms()
         initializeTasks()
+    }
+    func masterReset() {
+        // all params need to be pre-initialized
+        buildingGrid = []
+        actorList = []
+        // unused initializer, required to init to compile
+        player = GameActor(buildingXPos: 0, buildingYPos: 0, facing: ActorFaceDirection.RIGHT, type: ActorType.PLAYER)
+        lockers = []
+        classrooms = []
+        buttonUsable = false
+        isDone1 = false
+        isDone2 = false
+        gameOver = false
+        task1_locker_used = false
+        task2_locker_used = false
+        task3_locker_used = false
+        task4_locker_used = false
+        task5_locker_used = false
+        doneList = [false, false, false, false, false]
     }
     func initializeTasks() {
         for i in 0..<tasks.count {
@@ -48,6 +71,7 @@ import SwiftUI
     }
 
     func initiateActors() {
+        
         initiatePlayer()
         initiateHallMonitors()
     }
@@ -200,7 +224,7 @@ import SwiftUI
             }
         }
         
-        if actor.buildingXPos == player.buildingXPos && actor.buildingYPos == actor.buildingYPos {
+        if actor.buildingXPos == player.buildingXPos && actor.buildingYPos == player.buildingYPos {
             gameOver = true
         }
         
