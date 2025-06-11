@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct TitleScreenView: View {
+    @Environment(GameModel.self) var model: GameModel
+    @State var headingToMainGame = false
+    @State var headingToHowToPlay = false
     var body: some View {
-        @Environment(GameModel.self) var model: GameModel
-        @State var headingToMainGame = false
-        @State var headingToHowToPlay = false
-        NavigationView() {
+        NavigationStack() {
             ZStack {
                 Image("titleBackground")
                     .resizable()
@@ -33,15 +33,16 @@ struct TitleScreenView: View {
                     }
                 }
             }
+            .navigationDestination(isPresented: $headingToMainGame) {
+                MainGameView()
+                    .environment(model)
+            }
+            .navigationDestination(isPresented: $headingToHowToPlay) {
+                HowToPlayView()
+                    .environment(model)
+            }
         }
-        .navigationDestination(isPresented: $headingToMainGame) {
-            MainGameView()
-                .environment(model)
-        }
-        .navigationDestination(isPresented: $headingToHowToPlay) {
-            HowToPlayView()
-                .environment(model)
-        }
+        
     }
 }
 

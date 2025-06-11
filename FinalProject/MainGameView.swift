@@ -20,7 +20,7 @@ struct MainGameView: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        NavigationStack {
+        //NavigationStack {
             ZStack {
                 
                 Image("mainGameBackground")
@@ -113,7 +113,7 @@ struct MainGameView: View {
             .navigationDestination(isPresented: $win) {
                 WinScreen()
             }
-        }
+        //}
         .onReceive(timer) { time in
             if timeRemaining > 0 {
                 timeRemaining -= 1
