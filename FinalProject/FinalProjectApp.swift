@@ -13,7 +13,7 @@ struct FinalProjectApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainGameView()
+            TitleScreenView()
                 .environment(model)
         }
     }
