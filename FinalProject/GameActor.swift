@@ -26,7 +26,7 @@ enum ActorFaceDirection: Int {
     
     static let animImageDict: Dictionary<ActorType, [String]> = [
         ActorType.PLAYER : ["standingBeaver", "walkingBeaver"],
-        ActorType.HALL_MONITOR : ["lockerDoor"],
+        ActorType.HALL_MONITOR : ["standingMonitor", "walkingMonitor"],
     ]
 
     var buildingXPos: Int

@@ -80,18 +80,18 @@ struct MainGameView: View {
                         HStack(spacing: 5.0) {
                             GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_LEFT) {
                                 model.movePlayer(dir: -1)
-                                fromTile = [model.buildingGrid[0][0]]
-                                completed -= 1
-                                win = total==completed
-                                print(win)
-                                print(completed)
+//                                fromTile = [model.buildingGrid[0][0]]
+//                                completed -= 1
+//                                win = total==completed
+//                                print(win)
+//                                print(completed)
                             }
                             GameControlButton(buttonType: ButtonConstants.ButtonType.MOVE_PLAYER_RIGHT) {
                                 model.movePlayer(dir: 1)
-                                fromTile = [model.buildingGrid[0][0]]
-                                completed += 1
-                                win = total==completed
-                                print(completed)
+//                                fromTile = [model.buildingGrid[0][0]]
+//                                completed += 1
+//                                win = total==completed
+//                                print(completed)
                             }
                         }
                         .padding(5)

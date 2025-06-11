@@ -35,8 +35,8 @@ struct Tile {
     ]
     
     static let stairImageDict: Dictionary = [
-        StairDirection.DOWN: "square.and.arrow.down",
-        StairDirection.UP: "square.and.arrow.up",
+        StairDirection.DOWN: "downstairsDoor",
+        StairDirection.UP: "upstairsDoor",
         StairDirection.NONE: ""
     ]
     
@@ -50,7 +50,7 @@ struct TileView: View {
     var tile: Tile
     var body: some View {
         if tile.tileType == TileType.STAIRS {
-            Image(systemName: Tile.stairImageDict[tile.stairDirection] ?? "heart.fill")
+            Image(Tile.stairImageDict[tile.stairDirection] ?? "heart.fill")
                 .interpolation(.none)
                 .resizable()
                 .frame(width: 32, height: 32)
