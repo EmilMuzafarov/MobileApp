@@ -15,6 +15,10 @@ struct MainGameView: View {
     @Environment(GameModel.self) var model: GameModel
     @State private var showTask = false
     @State var win = total==completed
+    
+    @State private var timeRemaining = 100
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -27,15 +31,33 @@ struct MainGameView: View {
                         
                         HStack(alignment: .top) {
                             
-                            ZStack {
-                                Text("Current Floor:")
-                                
-                                    .bold()
-                                    .font(.system(size: 20))
-                                Text(model.player.buildingYPos != 0 ? String(model.player.buildingYPos) : "B")
-                                    .offset(x: 0, y: 36)
-                                    .bold()
-                                    .font(.system(size: 50))
+                            HStack {
+                                ZStack {
+                                    Text("Current Floor:")
+                                        .offset(x: 0, y: 13)
+                                        .bold()
+                                        .font(.system(size: 20))
+                                        .lineLimit(1)
+                                    Text(model.player.buildingYPos != 0 ? String(model.player.buildingYPos) : "B")
+                                        .offset(x: 0, y: 43)
+                                        .bold()
+                                        .font(.system(size: 50))
+                                }
+                                .padding(2)
+                                Spacer()
+                                ZStack {
+                                    Text("Time Left:")
+                                        .offset(x: 0, y: 13)
+                                        .bold()
+                                        .font(.system(size: 20))
+                                        .foregroundStyle(Color.white)
+                                    
+                                    Text("\(timeRemaining)")
+                                        .offset(x: 0, y: 43)
+                                        .bold()
+                                        .font(.system(size: 50))
+                                        .foregroundStyle(Color.white)
+                                }
                             }
                             .padding()
                             Spacer()
@@ -92,7 +114,13 @@ struct MainGameView: View {
                 WinScreen()
             }
         }
+        .onReceive(timer) { time in
+            if timeRemaining > 0 {
+                timeRemaining -= 1
+            }
+        }
     }
+        
 }
 
 #Preview {
