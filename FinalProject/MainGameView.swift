@@ -8,9 +8,9 @@
 import SwiftUI
 var fromTile: [Tile] = []
 var toTile: [Tile] = []
-let tasks: [String] = ["Deliver a note from locker 2 to classroom 6", "Bring Attendance from classroom 5 to the 1st floor locker", "Bring supplies from locker 5 to classroom 2", "Take the gym clothes from the basement locker to classroom 7", "Take handouts from locker 4 to classroom 8"]
+let taskList: [String] = ["Deliver a note from locker 2 to classroom 6", "Bring Attendance from 1st floor locker to classroom 5", "Bring supplies from locker 5 to classroom 2", "Take the gym clothes from the basement locker to classroom 7", "Take handouts from locker 4 to classroom 8"]
 var completed = 0
-var total = tasks.count
+var total = taskList.count
 struct MainGameView: View {
     @Environment(GameModel.self) var model: GameModel
     @State private var showTask = false

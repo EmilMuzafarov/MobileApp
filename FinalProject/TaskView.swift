@@ -6,19 +6,19 @@
 //
 
 import SwiftUI
-
 @Observable class GameTask: Identifiable {
-    var fromTile: Tile
-    var fromReached: Bool = false
-    var toTile: Tile
-    var toReached: Bool = false
+    //var fromTile: Tile
+    //var fromReached: Bool = false
+    //var toTile: Tile
+    //var toReached: Bool = false
     var title: String
-    var done: Bool = false
-    
-    init(fromTile: Tile, toTile: Tile, title: String) {
-        self.fromTile = fromTile
-        self.toTile = toTile
+    var done: Bool
+    //fromTile: Tile, toTile: Tile,
+    init(title: String, done: Bool = false) {
+        //self.fromTile = fromTile
+        //self.toTile = toTile
         self.title = title
+        self.done = done
     }
 }
 
@@ -27,6 +27,7 @@ struct TaskView: View {
     var body: some View {
         Text(task.title)
             .frame(maxWidth: 350)
+            .strikethrough(task.done, color: .gray)
     }
 }
 
@@ -58,15 +59,17 @@ struct WinScreen: View {
     }
 }
 struct TaskListView: View {
+    @Environment(GameModel.self) var model: GameModel
     var body: some View {
         Text("Tasks:")
             .font(.title)
             .fontWeight(.bold)
             .padding()
         VStack {
-            ForEach(tasks, id: \.self) { t in
-                //TaskView(title: t, done: false, fromTile: buildingGrid[0][0], toTile: buildingGrid[0][0])
-                //    .font(.headline)
+            ForEach(0..<model.tasks.count, id: \.self) { index in
+                let task = GameTask(title: model.tasks[index], done: model.doneList[index])
+                    TaskView(task: task)
+                        .font(.headline)
                 Divider()
             }
         }
@@ -74,5 +77,5 @@ struct TaskListView: View {
     }
 }
 #Preview {
-    TaskView(task: GameTask(fromTile: Tile(tileType: TileType.LOCKER), toTile: Tile(tileType: TileType.CLASSROOM), title: ""))
+    TaskView(task: GameTask(title: "Attendance"))
 }
