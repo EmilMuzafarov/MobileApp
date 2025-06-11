@@ -28,6 +28,7 @@ import SwiftUI
     var buttonUsable: Bool = false
     var isDone1: Bool = false
     var isDone2: Bool = false
+    var gameOver: Bool = false
     init() {
         initiateGame()
         initiateActors()
@@ -196,6 +197,11 @@ import SwiftUI
                 actor.buildingXPos = Int(newPos.x)
             }
         }
+        
+        if actor.buildingXPos == player.buildingXPos && actor.buildingYPos == actor.buildingYPos {
+            gameOver = true
+        }
+        
     }
 
     func updatePlayer(actor: GameActor) {
