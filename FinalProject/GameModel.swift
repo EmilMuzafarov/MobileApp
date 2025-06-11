@@ -14,31 +14,33 @@ import SwiftUI
     var actorList: [GameActor] = []
     // unused initializer, required to init to compile
     var player: GameActor = GameActor(buildingXPos: 0, buildingYPos: 0, facing: ActorFaceDirection.RIGHT, type: ActorType.PLAYER)
-    var tasks: [String] = ["Deliver a note from locker 2 to classroom 6", "Bring Attendance from classroom 5 to the 1st floor locker", "Bring supplies from locker 5 to classroom 2", "Take the gym clothes from the basement locker to classroom 7", "Take handouts from locker 4 to classroom 8"]
-    var fromTileXpos: [Int] = [2, 5, 5, 0, 4]
-    var fromTileYpos: [Int] = [0, 3, 4, 4, 0]
-    var fromTile: [Tile] = []
-    var toTileXpos: [Int] = [6, 1, 2, 7, 8]
-    var toTileYpos: [Int] = [6, 1, 5, 0, 5]
-    var toTile: [Tile] = []
+    var tasks: [String] = ["Deliver a note from locker 2 to classroom 6", "Bring Attendance from 1st floor locker to classroom 5", "Bring supplies from locker 5 to classroom 2", "Take the gym clothes from the basement locker to classroom 7", "Take handouts from locker 4 to classroom 8"]
     var taskList: [GameTask] = []
     var rows: Int = 10
     var columns: Int = 7
     var hallMonitorAmount: Int = 4
+    var lockers: [Tile] = []
+    var classrooms: [Tile] = []
     var buttonUsable: Bool = false
     var isDone1: Bool = false
     var isDone2: Bool = false
     var gameOver: Bool = false
+    var task1_locker_used = false
+    var task2_locker_used = false
+    var task3_locker_used = false
+    var task4_locker_used = false
+    var task5_locker_used = false
+    var doneList: [Bool] = [false, false, false, false, false]
     init() {
         initiateGame()
         initiateActors()
+        findLockers()
+        findClassrooms()
         initializeTasks()
     }
     func initializeTasks() {
-        fromTile = [buildingGrid[2][0], buildingGrid[5][3], buildingGrid[5][4], buildingGrid[0][4], buildingGrid[4][0]]
-        toTile = [buildingGrid[6][6], buildingGrid[1][1], buildingGrid[2][5], buildingGrid[7][0], buildingGrid[8][5]]
         for i in 0..<tasks.count {
-            taskList.append(GameTask(fromTile: fromTile[i], toTile: toTile[i], title: tasks[i]))
+            taskList.append(GameTask(title: tasks[i]))
         }
     }
     func initiateGame() {
@@ -287,19 +289,76 @@ import SwiftUI
         }
     }
     
-    func classroomInteract(classroomTile: Tile) {
-        for i in 0..<toTile.count {
-            if (true) {
-                isDone2=true
+    func findLockers() {
+        for r in 0..<buildingGrid.count {
+            for c in 0..<buildingGrid[0].count {
+                if buildingGrid[r][c].tileType == TileType.LOCKER {
+                    lockers.append(buildingGrid[r][c])
+                }
             }
         }
+        print(fromTile)
     }
-    
-    func lockerInteract(lockerTile: Tile) {
-        for i in 0..<toTile.count {
-            if (player.buildingXPos == 2) {
-                isDone1=true
+    func findClassrooms() {
+        for r in 0..<buildingGrid.count {
+            for c in 0..<buildingGrid[0].count {
+                if buildingGrid[r][c].tileType == TileType.CLASSROOM {
+                    classrooms.append(buildingGrid[r][c])
+                }
             }
+        }
+        print(toTile)
+    }
+    func classroomInteract(classroomTile: Tile) {
+        print("Checking classroom tiles...")
+        if player.buildingYPos == 6 && task1_locker_used {
+            doneList[0] = true
+            completed+=1
+            print("Task 1 done")
+        }
+        if player.buildingYPos == 5 && task2_locker_used {
+            doneList[1] = true
+            completed+=1
+            print("Task 2 done")
+        }
+        if player.buildingYPos == 2 && task3_locker_used {
+            doneList[2] = true
+            completed+=1
+            print("Task 3 done")
+        }
+        if player.buildingYPos == 7 && task4_locker_used {
+            doneList[3] = true
+            completed+=1
+            print("Task 4 done")
+        }
+        if player.buildingYPos == 8 && task5_locker_used {
+            doneList[4] = true
+            completed+=1
+            print("Task 5 done")
+        }
+        print("No tasks done")
+    }
+    func lockerInteract(lockerTile: Tile) {
+        print("Checking lockers")
+        if player.buildingYPos == 2 {
+            task1_locker_used = true
+            print("Locker 1 used")
+        }
+        if player.buildingYPos == 1 {
+            task2_locker_used = true
+            print("Locker 2 used")
+        }
+        if player.buildingYPos == 5 {
+            task3_locker_used = true
+            print("Locker 3 used")
+        }
+        if player.buildingYPos == 0 {
+            task4_locker_used = true
+            print("Locker 4 used")
+        }
+        if player.buildingYPos == 4 {
+            task5_locker_used = true
+            print("Locker 5 used")
         }
     }
     
